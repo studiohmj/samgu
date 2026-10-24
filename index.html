@@ -39,7 +39,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .topbar-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;text-decoration:none;color:var(--text)}
 .brand img{width:28px;height:28px;object-fit:contain}
-.navlink{font-size:14px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px}
+.navlink{font-size:14px;color:var(--muted);text-decoration:none;padding:0 10px;min-height:40px;display:inline-flex;align-items:center;border-radius:8px}
 .navlink:hover{background:var(--surface-2);color:var(--text)}
 
 .wrap{max-width:680px;margin:0 auto;padding:20px 16px 80px}
@@ -150,11 +150,21 @@ form.type-B .after-only .b-note{display:block}
 .demo{font-size:13px;background:var(--info-soft);color:var(--info);padding:10px 12px;border-radius:10px;margin:16px 0}
 
 /* admin */
-.admin-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.admin-head{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px 12px;margin-bottom:16px}
+@media (max-width:640px){
+  .admin-head{grid-template-columns:1fr auto}
+  .admin-head .actions{grid-column:1/-1;grid-row:2}
+  .admin-head .actions .btn{flex:1}
+}
 .admin-head h1{margin:0;font-size:24px}
 .admin-head .actions{display:flex;gap:8px;flex-wrap:wrap}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
-@media (max-width:760px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){
+  .stats{gap:6px}
+  .stats .stat{padding:10px 4px;text-align:center}
+  .stats .stat span{font-size:12px;white-space:nowrap}
+  .stats .stat b{font-size:20px}
+}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;text-align:left;transition:border-color .15s}
 .stat:hover{border-color:var(--brand)}
 .stat.active{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
@@ -206,7 +216,8 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 .dlg-head h3{margin:0;font-size:17px}
 .dlg-body{padding:20px 22px}
 .dlg-foot{display:flex;justify-content:space-between;gap:8px;padding:14px 22px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--surface)}
-.x{border:0;background:transparent;font-size:24px;line-height:1;cursor:pointer;color:var(--muted);padding:4px 8px}
+.x{border:0;background:transparent;font-size:26px;line-height:1;cursor:pointer;color:var(--muted);width:44px;height:44px;margin:-8px -10px -8px 0;border-radius:10px;flex:none}
+.x:hover{background:var(--surface-2)}
 .kv{display:grid;grid-template-columns:110px 1fr;gap:8px 12px;margin:0 0 18px;font-size:15px}
 .kv dt{color:var(--muted)}
 .kv dd{margin:0}
@@ -230,7 +241,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 .pill.lv-3{background:var(--danger-soft);color:var(--danger)}
 .pill.lv-2{background:var(--accent-soft);color:color-mix(in srgb,var(--accent) 65%,var(--text))}
 .pill.lv-1{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
-.btn.sm{padding:4px 10px;font-size:13px}
+.btn.sm{padding:4px 14px;font-size:13px;min-height:36px}
 .mail{margin-top:16px}
 .mail label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px}
 .mail-row{display:flex;gap:8px}
@@ -434,8 +445,8 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     <div class="actions">
       <button class="btn ghost reports-only" id="btnSample">샘플 데이터 추가</button>
       <button class="btn reports-only" id="btnCsv">CSV 다운로드</button>
-      <button class="btn ghost" id="btnLogout">로그아웃</button>
     </div>
+    <button class="btn ghost logout" id="btnLogout">로그아웃</button>
   </div>
   <div class="tabs" role="tablist">
     <button class="tab active" type="button" role="tab" data-tab="reports">제보 목록</button>
