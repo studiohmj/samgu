@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>안전일터 지킴이</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script>try{if(localStorage.getItem('sg_theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <style>
 :root{
   --bg:#f3f5f2; --surface:#ffffff; --surface-2:#f7f9f6; --text:#1a231f; --muted:#5b6962; --line:#e0e6e1;
@@ -14,16 +15,18 @@
   --info:#2563eb; --info-soft:#e7efff;
   --radius:16px; --shadow:0 1px 2px rgba(16,24,20,.04),0 6px 20px rgba(16,24,20,.05);
 }
-@media (prefers-color-scheme: dark){
-  :root{
+:root{color-scheme:light}
+:root[data-theme="dark"]{
+    color-scheme:dark;
     --bg:#0f1412; --surface:#181f1c; --surface-2:#141a17; --text:#e6ece8; --muted:#97a69f; --line:#28322d;
     --brand:#46ad79; --brand-ink:#06120b; --brand-soft:#1a2e23;
     --accent:#f0c23a; --accent-soft:#2c2711;
     --danger:#ef6b5e; --danger-soft:#3a1d1a;
     --info:#7aa5ff; --info-soft:#1b2540;
     --shadow:none;
-  }
 }
+button.navlink{border:0;background:transparent;cursor:pointer;font:inherit;font-size:14px}
+.top-actions{display:flex;align-items:center;gap:4px}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.6;word-break:keep-all}
@@ -32,7 +35,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 
 /* top bar */
-.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:20;background:var(--surface);background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .topbar-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;text-decoration:none;color:var(--text)}
 .brand img{width:28px;height:28px;object-fit:contain}
@@ -83,7 +86,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .req{font-style:normal;font-size:12px;font-weight:600;color:var(--danger);background:var(--danger-soft);padding:1px 6px;border-radius:5px}
 .opt{font-size:12px;font-weight:500;color:var(--muted)}
 .hint{font-size:13px;color:var(--muted);margin:6px 0 0}
-input[type=text],input[type=tel],input[type=password],select,textarea{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s}
+input[type=text],input[type=tel],input[type=email],input[type=password],select,textarea{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s}
 input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
 textarea{min-height:160px;resize:vertical;line-height:1.6}
 .field.invalid input,.field.invalid textarea,.field.invalid .choice,.field.invalid .consent{border-color:var(--danger)}
@@ -101,9 +104,9 @@ textarea{min-height:160px;resize:vertical;line-height:1.6}
 .choice .badge{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;background:var(--surface-2);border:1px solid var(--line);flex:none}
 .choice b{display:block}
 .choice small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
-.choice:has(input:checked){border-color:var(--brand);background:var(--brand-soft)}
-.choice:has(input:checked) .badge{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
-.choice:has(input:focus-visible){box-shadow:0 0 0 4px var(--brand-soft)}
+.choice.checked{border-color:var(--brand);background:var(--brand-soft)}
+.choice.checked .badge{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.choice:focus-within{box-shadow:0 0 0 4px var(--brand-soft)}
 
 .examples{margin-top:10px;border:1px dashed var(--line);border-radius:12px;padding:0 14px}
 .examples summary{padding:10px 0;font-size:14px}
@@ -122,7 +125,7 @@ textarea{min-height:160px;resize:vertical;line-height:1.6}
 .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:14px;line-height:1;cursor:pointer}
 .after-only .b-note{display:none;font-size:13px;color:var(--muted);margin:0 0 8px}
-form.type-B .after-only .drop{opacity:.45;pointer-events:none}
+form.type-B .after-only .drop,form.type-B .after-only .thumbs{opacity:.45;pointer-events:none}
 form.type-B .after-only .b-note{display:block}
 .reveal{animation:reveal .25s ease}
 @keyframes reveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
@@ -217,6 +220,21 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 .manage label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px}
 .manage select,.manage textarea{padding:10px 12px}
 .manage textarea{min-height:80px}
+.ai{border:1px solid color-mix(in srgb,var(--info) 30%,var(--line));background:var(--info-soft);border-radius:14px;padding:16px;margin-bottom:18px}
+.ai-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ai-row{display:flex;align-items:center;gap:10px;margin:6px 0;flex-wrap:wrap}
+.ai-row > span:first-child{width:72px;color:var(--muted);font-size:14px;flex:none}
+.ai .ph-title{margin:12px 0 4px}
+.ai .bullets{color:var(--text)}
+.ai-notes{margin:12px 0 0;padding:10px 12px 10px 28px;border-radius:10px;background:var(--surface);color:var(--danger);font-size:14px}
+.pill.lv-3{background:var(--danger-soft);color:var(--danger)}
+.pill.lv-2{background:var(--accent-soft);color:color-mix(in srgb,var(--accent) 65%,var(--text))}
+.pill.lv-1{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.btn.sm{padding:4px 10px;font-size:13px}
+.mail{margin-top:16px}
+.mail label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px}
+.mail-row{display:flex;gap:8px}
+.mail-row input{flex:1;min-width:0;padding:10px 12px}
 .warn{color:var(--danger);font-size:13px;margin:6px 0 0}
 #lightbox{width:auto;max-width:calc(100vw - 32px);background:transparent}
 #lightbox img{max-width:100%;max-height:calc(100vh - 48px);display:block;border-radius:12px}
@@ -224,6 +242,30 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:100;max-width:calc(100vw - 32px)}
 .toast.show{opacity:1;transform:translateX(-50%)}
 .footnote{text-align:center;font-size:12px;color:var(--muted);margin-top:24px}
+
+/* admin tabs & editor */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.tab{border:0;background:transparent;padding:10px 14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+.ed input,.ed textarea{padding:10px 12px}
+.ed textarea{min-height:0}
+.ed .row{display:grid;grid-template-columns:1fr 1.4fr 120px;gap:8px;margin-bottom:8px}
+.ed .row.head{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.ed .row.scope-row{grid-template-columns:150px 1fr auto}
+@media (max-width:640px){
+  .ed .row{grid-template-columns:1fr 1fr}
+  .ed .row > :first-child{grid-column:1/-1}
+  .ed .row.head{display:none}
+  .ed .row.scope-row{grid-template-columns:1fr auto}
+  .ed .row.scope-row > :first-child{grid-column:1}
+  .ed .row.scope-row > button{grid-column:2;grid-row:1}
+  .ed .row.scope-row > :nth-child(2){grid-column:1/-1;grid-row:2}
+  .ed .row.scope-row{padding-bottom:8px;border-bottom:1px dashed var(--line)}
+  .ed .row:not(.scope-row){padding-bottom:8px;border-bottom:1px dashed var(--line)}
+}
+.ed-bar{position:sticky;bottom:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 0;background:var(--bg)}
+.ed-bar .spacer{flex:1}
 </style>
 </head>
 <body>
@@ -234,7 +276,10 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       <img src="https://storage.tally.so/ac0146b7-bbed-4f6e-b5b7-9694c3ffe923/mindeulre.png" alt="" onerror="this.remove()">
       <span>안전일터 지킴이</span>
     </a>
-    <a class="navlink" id="navSwitch" href="#/admin">관리자</a>
+    <div class="top-actions">
+      <button class="navlink" id="themeBtn" type="button"></button>
+      <a class="navlink" id="navSwitch" href="#/admin">관리자</a>
+    </div>
   </div>
 </header>
 
@@ -242,40 +287,22 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 <main id="view-form" class="wrap">
   <section class="card hero">
     <img class="logo" src="https://storage.tally.so/ac0146b7-bbed-4f6e-b5b7-9694c3ffe923/mindeulre.png" alt="" onerror="this.remove()">
-    <h1>삼구 안전일터 지킴이</h1>
-    <p class="lead">사업장 안에 숨어 있는 위험요소를 미리 찾아내 안전한 일터를 만들기 위한 제보 창구입니다.</p>
+    <h1 id="c-title"></h1>
+    <p class="lead" id="c-intro"></p>
   </section>
 
+  <!-- 아래 c-* 영역은 관리자 '폼 내용 편집'에서 저장한 값으로 채워짐 -->
   <section class="card">
-    <h2 class="sec-title">제보 포상 <span class="sub">베네피아 복지몰 포인트 지급</span></h2>
-    <ul class="rewards">
-      <li class="top"><span class="r-name">우수 개선 사례<small>월 최대 3건 선정</small></span><span class="r-pt">50,000p</span></li>
-      <li><span class="r-name">개선 제보<small>위험요인 발견 + 조치 완료</small></span><span class="r-pt">10,000p</span></li>
-      <li><span class="r-name">일반 제보<small>위험요인 발견 + 지원 요청</small></span><span class="r-pt">5,000p</span></li>
-    </ul>
+    <h2 class="sec-title">제보 포상 <span class="sub" id="c-rewardSub"></span></h2>
+    <ul class="rewards" id="c-rewards"></ul>
 
-    <details class="fold">
+    <details class="fold" open>
       <summary>제보 범위</summary>
-      <div class="fold-body">
-        <dl class="scope">
-          <div><dt>인적 요인</dt><dd>근로자의 불안전한 행동으로 인한 위험</dd></div>
-          <div><dt>기계적 요인</dt><dd>기계·장비의 방호장치 미설치, 파손 등으로 인한 위험</dd></div>
-          <div><dt>환경적 요인</dt><dd>미끄러운 바닥, 소음, 정리정돈 등 작업 환경으로 인한 위험</dd></div>
-          <div><dt>관리적 요인</dt><dd>잘못된 작업 표준 절차 등으로 인한 위험</dd></div>
-          <div><dt>기타 요인</dt><dd>그 외 모든 위험 요소</dd></div>
-        </dl>
-      </div>
+      <div class="fold-body"><dl class="scope" id="c-scope"></dl></div>
     </details>
-    <details class="fold">
+    <details class="fold" open>
       <summary>포상 제외 기준</summary>
-      <div class="fold-body">
-        <ul class="bullets">
-          <li>안전 전담 근로자(작업감시자 등)의 일상 점검·교육에 대한 제보</li>
-          <li>삼구아이앤씨 및 직계약 수급업체 대상 외 제보</li>
-          <li>제보 범위에서 벗어나거나, 상세 내용 작성이 미흡한 제보</li>
-          <li>중복·유사 제보 (최상위 1건만 인정)</li>
-        </ul>
-      </div>
+      <div class="fold-body"><ul class="bullets" id="c-excl"></ul></div>
     </details>
   </section>
 
@@ -286,7 +313,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       <div class="field" data-field="consent">
         <label class="consent">
           <input type="checkbox" name="consent">
-          <span><b>[필수] 개인정보 수집·이용 동의</b><br><span class="opt" style="font-size:14px">제보 내용 처리와 포상 지급을 위해 제보자 정보를 수집·이용하는 것에 동의합니다.</span></span>
+          <span><b>[필수] 개인정보 수집·이용 동의</b><br><span class="opt" style="font-size:14px" id="c-consent"></span></span>
         </label>
         <p class="err">동의가 필요합니다.</p>
       </div>
@@ -303,16 +330,16 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
         <p class="err">소속 사업장명을 입력해 주세요.</p>
       </div>
 
+      <div class="field" data-field="benepia">
+        <label for="f-benepia">포인트 지급 사이트 ID (베네피아) <span class="opt">선택</span></label>
+        <input type="text" id="f-benepia" name="benepia" autocomplete="off" placeholder="베네피아 아이디">
+        <p class="hint">포상 포인트 지급에 사용됩니다. 계정이 없다면 <a href="https://39mall.benepia.co.kr/login/login.do" target="_blank" rel="noopener">회원가입 사이트 접속 →</a></p>
+      </div>
+
       <div class="field" data-field="phone">
         <label for="f-phone">휴대폰 번호 <em class="req">필수</em></label>
         <input type="tel" id="f-phone" name="phone" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13">
         <p class="err">올바른 휴대폰 번호를 입력해 주세요.</p>
-      </div>
-
-      <div class="field" data-field="benepia">
-        <label for="f-benepia">포인트 지급 ID (베네피아) <span class="opt">선택</span></label>
-        <input type="text" id="f-benepia" name="benepia" autocomplete="off" placeholder="베네피아 아이디">
-        <p class="hint">포상 포인트를 받으려면 필요합니다. 계정이 없다면 <a href="https://39mall.benepia.co.kr/login/login.do" target="_blank" rel="noopener">회원가입 하기 →</a></p>
       </div>
     </section>
 
@@ -322,8 +349,8 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       <div class="field" data-field="type">
         <div class="label">제보 유형 <em class="req">필수</em></div>
         <div class="choice-grid" role="radiogroup">
-          <label class="choice"><input type="radio" name="type" value="A"><span class="badge">A</span><span><b>개선 제보</b><small>위험요인을 발견하고 조치까지 완료했어요</small></span></label>
-          <label class="choice"><input type="radio" name="type" value="B"><span class="badge">B</span><span><b>일반 제보</b><small>자체 개선이 어려워 지원이 필요해요</small></span></label>
+          <label class="choice"><input type="radio" name="type" value="A"><span class="badge">A</span><span><b>개선 제보</b><small id="c-descA"></small></span></label>
+          <label class="choice"><input type="radio" name="type" value="B"><span class="badge">B</span><span><b>일반 제보</b><small id="c-descB"></small></span></label>
         </div>
         <p class="err">제보 유형을 선택해 주세요.</p>
       </div>
@@ -333,13 +360,10 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
         <textarea id="f-detail" name="detail" maxlength="2000" placeholder="장소 → 발견한 위험 → 취한 조치(또는 필요한 지원) 순서로 적어 주세요."></textarea>
         <div class="counter"><span id="detailCount">0</span> / 2000</div>
         <p class="err">상세 제보 내용을 입력해 주세요.</p>
-        <details class="examples">
+        <details class="examples" open>
           <summary>작성 예시 보기</summary>
-          <ol>
-            <li>0층 0장소 이동식 사다리 발판의 미끄럼 방지 패드 마모 및 균열 확인 <span class="arrow">→</span> 즉시 사용 금지 표지 부착, 폐기 요청하여 추락 사고 예방</li>
-            <li>0층 0장소 핸드그라인더 전선 피복 훼손으로 구리선 노출 확인 <span class="arrow">→</span> 즉시 전원 차단 및 절연 보수하여 감전 사고 예방</li>
-            <li>0층 0장소 누유로 통로 바닥이 매우 미끄러움 <span class="arrow">→</span> 통행 통제 표지판 설치 후 흡착포로 제거하여 넘어짐 사고 예방</li>
-          </ol>
+          <p class="hint" style="margin:0 0 8px" id="c-exGuide"></p>
+          <ol id="c-examples"></ol>
         </details>
       </div>
     </section>
@@ -358,7 +382,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
         <div class="thumbs" id="thumbs-before"></div>
       </div>
 
-      <div class="field after-only reveal" data-field="after">
+      <div class="field after-only" data-field="after">
         <div class="label">개선 후 조치 사진 <span class="opt">A 개선 제보만 해당 · 최대 3장</span></div>
         <p class="b-note">B 일반 제보는 개선 후 사진이 필요 없습니다.</p>
         <div class="drop" data-kind="after">
@@ -388,7 +412,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 <main id="view-login" class="wrap" hidden>
   <form class="card login" id="loginForm" novalidate>
     <h1>관리자 로그인</h1>
-    <p class="lead" style="font-size:14px">제보 관리는 등록된 관리자만 이용할 수 있습니다.</p>
+    <p class="lead" style="font-size:14px">제보 관리와 폼 내용 수정은 등록된 관리자만 이용할 수 있습니다.</p>
     <div class="demo">테스트 계정 · 아이디 <b>admin</b> / 비밀번호 <b>safety1234</b></div>
     <div class="field" data-field="uid">
       <label for="l-id">아이디</label>
@@ -406,13 +430,64 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
 <!-- ============ 관리자 대시보드 ============ -->
 <main id="view-admin" class="wrap wide" hidden>
   <div class="admin-head">
-    <h1>제보 관리</h1>
+    <h1>관리자</h1>
     <div class="actions">
-      <button class="btn ghost" id="btnSample">샘플 데이터 추가</button>
-      <button class="btn" id="btnCsv">CSV 다운로드</button>
+      <button class="btn ghost reports-only" id="btnSample">샘플 데이터 추가</button>
+      <button class="btn reports-only" id="btnCsv">CSV 다운로드</button>
       <button class="btn ghost" id="btnLogout">로그아웃</button>
     </div>
   </div>
+  <div class="tabs" role="tablist">
+    <button class="tab active" type="button" role="tab" data-tab="reports">제보 목록</button>
+    <button class="tab" type="button" role="tab" data-tab="content">폼 내용 편집</button>
+  </div>
+
+  <!-- 폼 내용 편집 (관리자 전용) -->
+  <div id="tab-content" hidden>
+    <div class="card ed">
+      <h2 class="sec-title">기본 안내</h2>
+      <div class="field"><label for="e-title">제목</label><input type="text" id="e-title"></div>
+      <div class="field"><label for="e-intro">안내문</label><textarea id="e-intro" rows="3"></textarea></div>
+    </div>
+    <div class="card ed">
+      <h2 class="sec-title">제보 포상</h2>
+      <div class="field"><label for="e-rewardSub">부제</label><input type="text" id="e-rewardSub"></div>
+      <div class="row head"><span>포상 이름</span><span>설명</span><span>포인트</span></div>
+      <div id="e-rewards"></div>
+      <p class="hint">첫 번째 줄은 강조 표시되고, 관리자 화면의 포상 등급 이름에도 그대로 쓰입니다.</p>
+    </div>
+    <div class="card ed">
+      <h2 class="sec-title">제보 범위</h2>
+      <div id="e-scope"></div>
+      <button class="btn ghost" type="button" id="addScope">+ 항목 추가</button>
+    </div>
+    <div class="card ed">
+      <h2 class="sec-title">포상 제외 기준 <span class="sub">한 줄에 하나씩</span></h2>
+      <textarea id="e-excl" rows="6"></textarea>
+    </div>
+    <div class="card ed">
+      <h2 class="sec-title">제보 유형 설명</h2>
+      <div class="field"><label for="e-descA">A 개선 제보</label><input type="text" id="e-descA"></div>
+      <div class="field"><label for="e-descB">B 일반 제보</label><input type="text" id="e-descB"></div>
+    </div>
+    <div class="card ed">
+      <h2 class="sec-title">개인정보 수집 동의 문구</h2>
+      <textarea id="e-consent" rows="3"></textarea>
+    </div>
+    <div class="card ed">
+      <h2 class="sec-title">작성 예시</h2>
+      <div class="field"><label for="e-exGuide">안내 문구</label><input type="text" id="e-exGuide"></div>
+      <div class="field"><label for="e-examples">예시 <span class="opt">한 줄에 하나씩 · "→"는 강조 표시됩니다</span></label><textarea id="e-examples" rows="8"></textarea></div>
+    </div>
+    <div class="ed-bar">
+      <button class="btn ghost" type="button" id="edReset">기본값으로 되돌리기</button>
+      <span class="spacer"></span>
+      <a class="btn ghost" href="#/" target="_blank" rel="noopener">제보 화면 보기</a>
+      <button class="btn" type="button" id="edSave">저장</button>
+    </div>
+  </div>
+
+  <div id="tab-reports">
   <div class="stats" id="stats"></div>
   <div class="card filters">
     <input type="text" class="search" id="q" placeholder="성명, 사업장, 내용, 접수번호 검색">
@@ -425,6 +500,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       <tbody id="rows"></tbody>
     </table>
     <p class="empty" id="empty" hidden>조건에 맞는 제보가 없습니다.</p>
+  </div>
   </div>
 </main>
 
@@ -442,7 +518,48 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
   const MAX_PHOTOS = 3;
   const TYPE = { A: '개선 제보', B: '일반 제보' };
   const STATUS = { new: '접수', review: '검토 중', reward: '포상 확정', excluded: '제외' };
-  const REWARD = { '': '미지정', best: '우수 개선 50,000p', improve: '개선 10,000p', general: '일반 5,000p', none: '지급 없음' };
+  // 폼 안내 문구 기본값. 관리자가 '폼 내용 편집'에서 저장하면 CFG_KEY에 덮어씀
+  const CFG_KEY = 'sg_config_v1';
+  const DEFAULT_CONFIG = {
+    title: '삼구 안전일터 지킴이',
+    intro: '본 설문은 사업장 내 잠재된 모든 위험요소를 사전에 발굴하여 안전한 환경을 조성하기 위해 운영됩니다.',
+    rewardSub: '베네피아 복지몰 포인트 지급',
+    rewards: [
+      { name: '우수 개선 사례', desc: '월 최대 3건 선정', pt: '50,000p' },
+      { name: '개선 제보', desc: '위험요인 발견 + 조치 완료', pt: '10,000p' },
+      { name: '일반 제보', desc: '위험요인 발견 + 지원 요청', pt: '5,000p' },
+    ],
+    scope: [
+      { name: '인적 요인', desc: '근로자의 불안전한 행동으로 인한 위험' },
+      { name: '기계적 요인', desc: '기계 및 장비의 방호장치 미설치/파손 등으로 인한 위험' },
+      { name: '환경적 요인', desc: '미끄러운 바닥, 소음, 정리정돈 등 작업 환경으로 인한 위험' },
+      { name: '관리적 요인', desc: '잘못된 작업 표준 절차 등으로 인한 위험' },
+      { name: '기타 요인', desc: '그 외 모든 위험 요소' },
+    ],
+    exclusions: [
+      '안전 전담 근로자(작업감시자 등)의 일상 점검·교육에 대한 제보',
+      '삼구아이앤씨 및 직계약 수급업체 대상 외 제보',
+      '제보 범위에서 벗어나거나, 상세 제보 내용 작성이 미흡한 제보',
+      '중복·유사 제보 (최상위 1건만 인정)',
+    ],
+    descA: '위험요인 발견 및 조치 완료 시',
+    descB: '자체 개선이 어려워 지원 요청 시',
+    consent: '제보 내용 처리 및 포상 지급 목적으로 제보자 정보를 수집 및 이용하는 것에 동의합니다.',
+    exGuide: '장소, 상황을 포함한 위험요인을 최대한 상세하게 작성 바랍니다.',
+    examples: [
+      '0층 0장소 이동식 사다리 발판 미끄럼 방지 패드 마모 및 심한 균열 확인 → 현장 즉시 사용 금지 표지 부착 및 폐기 요청하여 작업자 추락 사고 예방',
+      '0층 0장소 핸드그라인더 전선 피복 훼손으로 내부 구리선 노출 확인 → 감전 위험 차단을 위해 즉시 전원 차단 및 절연 보수 조치하여 감전 사고 예방',
+      '0층 0장소 누유로 인해 작업 통로 바닥에 유분이 형성되어 매우 미끄러움 확인 → 통행 통제 표지판 설치 후 흡착포로 즉시 제거하여 전도(넘어짐) 사고 예방',
+    ],
+  };
+  let cfg = structuredClone(DEFAULT_CONFIG);
+  const rewardMap = () => ({
+    '': '미지정',
+    best: `${cfg.rewards[0].name} ${cfg.rewards[0].pt}`,
+    improve: `${cfg.rewards[1].name} ${cfg.rewards[1].pt}`,
+    general: `${cfg.rewards[2].name} ${cfg.rewards[2].pt}`,
+    none: '지급 없음',
+  });
 
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -450,9 +567,26 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
   const fmtDate = iso => new Date(iso).toLocaleString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 
   // ---------- 저장소 ----------
-  let memory = [];
-  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return memory; } }
-  function save(list) { memory = list; try { localStorage.setItem(KEY, JSON.stringify(list)); return true; } catch { return false; } }
+  // 사진 때문에 localStorage(5MB)로는 금방 꽉 차서 IndexedDB 사용. 화면은 메모리 캐시를 읽고, 저장만 비동기로 씀
+  const DB_NAME = 'sg_test', STORE = 'kv';
+  let dbp;
+  const idb = () => dbp ??= new Promise((res, rej) => {
+    const r = indexedDB.open(DB_NAME, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(STORE);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+  async function idbGet(k) {
+    const db = await idb();
+    return new Promise((res, rej) => { const q = db.transaction(STORE).objectStore(STORE).get(k); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); });
+  }
+  async function idbSet(k, v) {
+    const db = await idb();
+    return new Promise((res, rej) => { const t = db.transaction(STORE, 'readwrite'); t.objectStore(STORE).put(v, k); t.oncomplete = () => res(); t.onerror = t.onabort = () => rej(t.error); });
+  }
+  let cache = [];
+  const load = () => cache;
+  async function save(list) { cache = list; try { await idbSet(KEY, list); return true; } catch { return false; } }
   let memAuth = false;
   const isAuthed = () => { try { return sessionStorage.getItem(AUTH_KEY) === '1'; } catch { return memAuth; } };
   const setAuth = v => { memAuth = v; try { v ? sessionStorage.setItem(AUTH_KEY, '1') : sessionStorage.removeItem(AUTH_KEY); } catch {} };
@@ -467,6 +601,17 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     const ymd = String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
     return `SG-${ymd}-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
   }
+
+  // ---------- 화면 모드 (기본 라이트) ----------
+  const themeBtn = $('#themeBtn');
+  const syncThemeBtn = () => { themeBtn.textContent = document.documentElement.dataset.theme === 'dark' ? '라이트 모드' : '다크 모드'; };
+  themeBtn.addEventListener('click', () => {
+    const dark = document.documentElement.dataset.theme !== 'dark';
+    if (dark) document.documentElement.dataset.theme = 'dark'; else delete document.documentElement.dataset.theme;
+    try { localStorage.setItem('sg_theme', dark ? 'dark' : 'light'); } catch {}
+    syncThemeBtn();
+  });
+  syncThemeBtn();
 
   // ---------- 라우팅 ----------
   function route() {
@@ -487,20 +632,25 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
   const photos = { before: [], after: [] };
 
   form.addEventListener('change', e => {
-    if (e.target.name === 'type') form.className = 'type-' + e.target.value;
+    if (e.target.name === 'type') { form.className = 'type-' + e.target.value; syncChoices(); }
     const f = e.target.closest('.field'); if (f) f.classList.remove('invalid');
   });
+  // :has() 미지원 브라우저(구형 안드로이드, 인앱 브라우저)에서도 선택 표시가 보이도록 클래스로 처리
+  const syncChoices = () => $$('.choice', form).forEach(c => c.classList.toggle('checked', $('input', c).checked));
   form.addEventListener('input', e => {
     const f = e.target.closest('.field'); if (f) f.classList.remove('invalid');
   });
 
   $('#f-phone').addEventListener('input', e => {
     const d = e.target.value.replace(/\D/g, '').slice(0, 11);
-    e.target.value = d.length < 4 ? d : d.length < 8 ? `${d.slice(0, 3)}-${d.slice(3)}` : `${d.slice(0, 3)}-${d.slice(3, d.length - 4)}-${d.slice(-4)}`;
+    e.target.value = d.length < 4 ? d
+      : d.length < 8 ? `${d.slice(0, 3)}-${d.slice(3)}`
+      : d.length < 11 ? `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}`
+      : `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
   });
   $('#f-detail').addEventListener('input', e => { $('#detailCount').textContent = e.target.value.length; });
 
-  function compressImage(file, max = 1280, q = 0.72) {
+  function compressImage(file, max = 1600, q = 0.8) {
     return new Promise((res, rej) => {
       const img = new Image(), url = URL.createObjectURL(file);
       img.onload = () => {
@@ -516,15 +666,20 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     });
   }
 
+  // 처리 중인 사진 수. 연속 선택 시 3장 초과 방지, 처리 중 제출 방지에 사용
+  const pending = { before: 0, after: 0 };
   async function addFiles(kind, files) {
     for (const file of files) {
-      if (photos[kind].length >= MAX_PHOTOS) { toast(`사진은 최대 ${MAX_PHOTOS}장까지 첨부할 수 있습니다.`); break; }
-      if (!file.type.startsWith('image/')) { toast('이미지 파일만 첨부할 수 있습니다.'); continue; }
+      if (photos[kind].length + pending[kind] >= MAX_PHOTOS) { toast(`사진은 최대 ${MAX_PHOTOS}장까지 첨부할 수 있습니다.`); break; }
+      // 일부 PC에서는 HEIC 등의 type이 빈 문자열이라 type이 있을 때만 검사
+      if (file.type && !file.type.startsWith('image/')) { toast(`${file.name}: 이미지 파일만 첨부할 수 있습니다.`); continue; }
       if (file.size > MAX_FILE) { toast(`${file.name}: 10MB를 넘는 파일입니다.`); continue; }
+      pending[kind]++;
       try { photos[kind].push(await compressImage(file)); }
-      catch { toast(`${file.name}: 이미지를 읽을 수 없습니다. (JPG/PNG 권장)`); }
+      catch { toast(`${file.name}: 이미지를 읽을 수 없습니다. JPG 또는 PNG로 올려 주세요.`); }
+      finally { pending[kind]--; }
+      renderThumbs(kind);
     }
-    renderThumbs(kind);
   }
 
   function renderThumbs(kind) {
@@ -543,6 +698,8 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
     drop.addEventListener('drop', e => addFiles(kind, [...e.dataTransfer.files]));
   });
+  // 업로드 칸 밖에 사진을 떨어뜨리면 브라우저가 사진을 열어버려 작성 내용이 날아가는 것 방지
+  ['dragover', 'drop'].forEach(ev => window.addEventListener(ev, e => e.preventDefault()));
 
   function validate() {
     const v = {
@@ -569,8 +726,9 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     return v;
   }
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
+    if (pending.before || pending.after) { toast('사진을 처리하는 중입니다. 잠시 후 다시 눌러 주세요.'); return; }
     const v = validate(); if (!v) return;
     const report = {
       id: newId(), createdAt: new Date().toISOString(),
@@ -578,8 +736,11 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       photoBefore: photos.before.slice(), photoAfter: v.type === 'A' ? photos.after.slice() : [],
       status: 'new', reward: '', memo: '',
     };
+    const btn = $('#submitBtn'); btn.disabled = true; btn.textContent = '제출 중…';
     const list = load(); list.unshift(report);
-    if (!save(list)) { toast('저장 공간이 부족합니다. 사진 수를 줄이거나 관리자 화면에서 오래된 테스트 제보를 삭제해 주세요.'); return; }
+    const ok = await save(list);
+    btn.disabled = false; btn.textContent = '제보 제출하기';
+    if (!ok) { list.shift(); toast('저장에 실패했습니다. 사진 수를 줄이거나 관리자 화면에서 테스트 제보를 삭제해 주세요.'); return; }
     $('#ticketId').textContent = report.id;
     form.hidden = true; $('#successBox').hidden = false;
     $$('#view-form > section.card:not(#successBox)').forEach(s => s.hidden = true);
@@ -587,7 +748,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
   });
 
   $('#againBtn').addEventListener('click', () => {
-    form.reset(); form.className = ''; photos.before = []; photos.after = [];
+    form.reset(); form.className = ''; syncChoices(); photos.before = []; photos.after = [];
     renderThumbs('before'); renderThumbs('after'); $('#detailCount').textContent = '0';
     form.hidden = false; $('#successBox').hidden = true;
     $$('#view-form > section.card:not(#successBox)').forEach(s => s.hidden = false);
@@ -602,10 +763,106 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     if (!ok) return;
     setAuth(true); $('#l-pw').value = ''; route();
   });
-  $('#btnLogout').addEventListener('click', () => { setAuth(false); route(); });
+  $('#btnLogout').addEventListener('click', () => {
+    if (!confirmLeave()) return;
+    setAuth(false); route();
+  });
+
+  // ---------- 폼 내용 렌더링 / 편집 (관리자 전용) ----------
+  function renderContent() {
+    $('#c-title').textContent = cfg.title;
+    $('#c-intro').textContent = cfg.intro;
+    $('#c-rewardSub').textContent = cfg.rewardSub;
+    $('#c-rewards').innerHTML = cfg.rewards.map((r, i) =>
+      `<li class="${i === 0 ? 'top' : ''}"><span class="r-name">${esc(r.name)}${r.desc ? `<small>${esc(r.desc)}</small>` : ''}</span><span class="r-pt">${esc(r.pt)}</span></li>`).join('');
+    $('#c-scope').innerHTML = cfg.scope.map(s => `<div><dt>${esc(s.name)}</dt><dd>${esc(s.desc)}</dd></div>`).join('');
+    $('#c-excl').innerHTML = cfg.exclusions.map(x => `<li>${esc(x)}</li>`).join('');
+    $('#c-consent').textContent = cfg.consent;
+    $('#c-descA').textContent = cfg.descA;
+    $('#c-descB').textContent = cfg.descB;
+    $('#c-exGuide').textContent = cfg.exGuide;
+    // "상황 → 조치"를 두 줄로: 화살표부터 다음 줄
+    $('#c-examples').innerHTML = cfg.examples.map(x => {
+      const i = x.indexOf('→');
+      if (i < 0) return `<li>${esc(x)}</li>`;
+      return `<li>${esc(x.slice(0, i).trim())}<br><span class="arrow">→</span> ${esc(x.slice(i + 1).trim())}</li>`;
+    }).join('');
+  }
+
+  const scopeRow = (s = { name: '', desc: '' }) =>
+    `<div class="row scope-row"><input type="text" data-k="name" value="${esc(s.name)}" placeholder="요인명" aria-label="요인명"><input type="text" data-k="desc" value="${esc(s.desc)}" placeholder="설명" aria-label="설명"><button type="button" class="btn ghost" data-act="rm">삭제</button></div>`;
+
+  function fillEditor(c) {
+    $('#e-title').value = c.title;
+    $('#e-intro').value = c.intro;
+    $('#e-rewardSub').value = c.rewardSub;
+    $('#e-rewards').innerHTML = c.rewards.map((r, i) =>
+      `<div class="row"><input type="text" data-k="name" value="${esc(r.name)}" aria-label="포상 ${i + 1} 이름"><input type="text" data-k="desc" value="${esc(r.desc)}" placeholder="설명 (선택)" aria-label="포상 ${i + 1} 설명"><input type="text" data-k="pt" value="${esc(r.pt)}" aria-label="포상 ${i + 1} 포인트"></div>`).join('');
+    $('#e-scope').innerHTML = c.scope.map(scopeRow).join('');
+    $('#e-excl').value = c.exclusions.join('\n');
+    $('#e-descA').value = c.descA;
+    $('#e-descB').value = c.descB;
+    $('#e-consent').value = c.consent;
+    $('#e-exGuide').value = c.exGuide;
+    $('#e-examples').value = c.examples.join('\n');
+    edDirty = false;
+  }
+
+  function readEditor() {
+    const lines = v => v.split('\n').map(s => s.trim()).filter(Boolean);
+    const val = s => $(s).value.trim();
+    return {
+      title: val('#e-title'), intro: val('#e-intro'), rewardSub: val('#e-rewardSub'),
+      rewards: $$('#e-rewards .row').map(r => ({ name: $('[data-k=name]', r).value.trim(), desc: $('[data-k=desc]', r).value.trim(), pt: $('[data-k=pt]', r).value.trim() })),
+      scope: $$('#e-scope .row').map(r => ({ name: $('[data-k=name]', r).value.trim(), desc: $('[data-k=desc]', r).value.trim() })).filter(s => s.name || s.desc),
+      exclusions: lines($('#e-excl').value),
+      descA: val('#e-descA'), descB: val('#e-descB'), consent: val('#e-consent'),
+      exGuide: val('#e-exGuide'), examples: lines($('#e-examples').value),
+    };
+  }
+
+  let edDirty = false;
+  const confirmLeave = () => {
+    if (!edDirty) return true;
+    if (!confirm('저장하지 않은 변경 내용이 있습니다. 버리고 이동할까요?')) return false;
+    edDirty = false; return true;
+  };
+  $('#tab-content').addEventListener('input', () => { edDirty = true; });
+  window.addEventListener('beforeunload', e => { if (edDirty) { e.preventDefault(); e.returnValue = ''; } });
+  $$('#navSwitch, .brand').forEach(a => a.addEventListener('click', e => { if (!confirmLeave()) e.preventDefault(); }));
+
+  function showTab(t) {
+    if (t === 'reports' && !confirmLeave()) return;
+    $$('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+    $('#tab-reports').hidden = t !== 'reports';
+    $('#tab-content').hidden = t !== 'content';
+    $$('.reports-only').forEach(b => b.hidden = t !== 'reports');
+    if (t === 'content') fillEditor(cfg); else renderAdmin();
+  }
+  $$('.tab').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+  $('#addScope').addEventListener('click', () => {
+    $('#e-scope').insertAdjacentHTML('beforeend', scopeRow());
+    $('#e-scope .row:last-child input').focus(); edDirty = true;
+  });
+  $('#e-scope').addEventListener('click', e => {
+    if (e.target.dataset.act === 'rm') { e.target.closest('.row').remove(); edDirty = true; }
+  });
+  $('#edReset').addEventListener('click', () => {
+    if (!confirm('처음 문구로 되돌릴까요? 저장을 눌러야 반영됩니다.')) return;
+    fillEditor(DEFAULT_CONFIG); edDirty = true;
+  });
+  $('#edSave').addEventListener('click', async () => {
+    if (!isAuthed()) return route(); // 관리자 세션이 아니면 저장 불가
+    const next = readEditor();
+    if (!next.title) return toast('제목을 입력해 주세요.');
+    if (next.rewards.some(r => !r.name || !r.pt)) return toast('포상 이름과 포인트를 모두 입력해 주세요.');
+    try { await idbSet(CFG_KEY, next); } catch { return toast('저장에 실패했습니다.'); }
+    cfg = next; edDirty = false; renderContent();
+    toast('저장했습니다. 제보 화면에 바로 반영됩니다.');
+  });
 
   // ---------- 관리자 ----------
-  let statusFilter = '';
   function filtered() {
     const q = $('#q').value.trim().toLowerCase(), t = $('#fType').value, s = $('#fStatus').value;
     return load().filter(r =>
@@ -627,12 +884,12 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       <tr data-id="${esc(r.id)}">
         <td data-c="date" class="num">${fmtDate(r.createdAt)}</td>
         <td data-c="id" class="num">${esc(r.id)}</td>
-        <td data-c="type"><span class="pill t-${r.type}">${r.type} ${TYPE[r.type]}</span></td>
+        <td data-c="type"><span class="pill t-${r.type}">${r.type} ${TYPE[r.type]}</span> <span class="pill lv-${analyze(r, false).level}">위험 ${LEVEL[analyze(r, false).level]}</span></td>
         <td data-c="who" class="who"><b>${esc(r.name)}</b><small>${esc(r.site)}</small></td>
         <td data-c="summary"><span class="summary">${esc(r.detail)}</span></td>
         <td data-c="photos" class="num">${r.photoBefore.length + r.photoAfter.length || '-'}</td>
         <td data-c="status"><span class="pill s-${r.status}">${STATUS[r.status]}</span></td>
-        <td data-c="reward">${r.reward ? esc(REWARD[r.reward]) : '<span style="color:var(--muted)">-</span>'}</td>
+        <td data-c="reward">${r.reward ? esc(rewardMap()[r.reward]) : '<span style="color:var(--muted)">-</span>'}</td>
       </tr>`).join('');
   }
   $('#stats').addEventListener('click', e => { const b = e.target.closest('.stat'); if (!b) return; $('#fStatus').value = b.dataset.s; renderAdmin(); });
@@ -645,12 +902,73 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       ? `<div class="ph-grid">${arr.map(src => `<img src="${src}" alt="${title}">`).join('')}</div>`
       : `<p class="ph-none">첨부된 사진이 없습니다.</p>`);
   }
+  // 월 경계는 한국 시간 기준 (ISO 문자열을 그대로 자르면 UTC 기준이라 매월 1일 오전 9시 전 제보가 전월로 잡힘)
+  const monthKey = iso => { const d = new Date(iso); return d.getFullYear() * 100 + d.getMonth(); };
   function bestCountThisMonth(exceptId, iso) {
-    const m = iso.slice(0, 7);
-    return load().filter(r => r.id !== exceptId && r.reward === 'best' && r.createdAt.slice(0, 7) === m).length;
+    const m = monthKey(iso);
+    return load().filter(r => r.id !== exceptId && r.reward === 'best' && monthKey(r.createdAt) === m).length;
   }
+  // ---------- 자동 분석 (테스트: 키워드 규칙 / 실제 버전: 서버에서 Claude가 분석) ----------
+  const HAZARDS = [
+    { key: '추락', level: 3, words: ['추락', '사다리', '고소', '개구부', '난간', '비계', '발판', '떨어'], actions: ['해당 설비·구역 즉시 사용 중지 및 출입 통제', '안전난간·덮개 설치 또는 사다리 교체', '고소작업 시 안전대 착용 여부 점검'] },
+    { key: '감전', level: 3, words: ['감전', '전선', '피복', '누전', '콘센트', '분전반', '전기', '구리선', '배선'], actions: ['즉시 전원 차단 및 잠금·표지(LOTO)', '절연 보수 또는 케이블 교체', '누전차단기 작동 점검'] },
+    { key: '끼임', level: 3, words: ['끼임', '협착', '컨베이어', '롤러', '회전체', '방호장치', '체인'], actions: ['설비 운전 정지 후 정비', '방호장치·덮개 복구', '비상정지 장치 작동 확인'] },
+    { key: '화재·폭발', level: 3, words: ['화재', '불꽃', '가스', '인화', '용접', '소화기', '스파크', '폭발'], actions: ['주변 인화물 제거 및 화기 작업 중지', '소화기 비치·점검', '가스 누설 점검'] },
+    { key: '넘어짐', level: 2, words: ['미끄러', '누유', '물기', '유분', '넘어', '전도', '걸려', '배수', '결빙', '물이 고'], actions: ['통행 통제 표지 설치', '흡착포·청소로 즉시 제거', '누유·누수 원인 설비 수리', '미끄럼 방지 매트 설치 검토'] },
+    { key: '충돌·낙하', level: 2, words: ['지게차', '적재', '낙하', '무너', '선반', '충돌', '랙'], actions: ['적재 높이·결속 상태 정리', '보행 통로와 차량 동선 분리 표시', '낙하 위험 구역 출입 통제'] },
+    { key: '유해물질', level: 2, words: ['화학', '누출', '냄새', '분진', '유해', '약품', '흄', '증기'], actions: ['환기 실시 및 보호구 착용', '누출 물질 MSDS 확인 후 처리', '보관 용기·라벨 점검'] },
+    { key: '작업환경', level: 1, words: ['소음', '조명', '정리정돈', '어둡', '더위', '적치'], actions: ['정리정돈 및 적치물 제거', '조명·환기 등 환경 개선 요청'] },
+  ];
+  const LEVEL = { 3: '높음', 2: '보통', 1: '낮음' };
+  const tokens = s => new Set(String(s).replace(/[^가-힣a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length >= 2));
+  function findDuplicate(r) {
+    // 같은 사업장, 14일 이내, 내용 단어가 40% 이상 겹치면 중복 의심
+    const mine = tokens(r.detail);
+    return load().find(o => {
+      if (o.id === r.id || o.site !== r.site || Math.abs(new Date(o.createdAt) - new Date(r.createdAt)) > 14 * 864e5) return false;
+      const t = tokens(o.detail); let n = 0; mine.forEach(w => { if (t.has(w)) n++; });
+      return n / Math.max(1, Math.min(mine.size, t.size)) >= 0.4;
+    });
+  }
+  function analyze(r, withDup = true) {
+    const hits = HAZARDS.filter(h => h.words.some(w => r.detail.includes(w)));
+    const level = hits.length ? Math.max(...hits.map(h => h.level)) : 2;
+    const actions = hits.length ? [...new Set(hits.flatMap(h => h.actions))] : ['현장 확인 후 위험 유형 분류'];
+    const steps = r.type === 'A'
+      ? ['조치 전·후 사진으로 개선 완료 여부 확인', '같은 위험이 다른 구역에도 있는지 수평 전개 점검', '포상 등급 확정 후 포인트 지급']
+      : ['담당 부서 배정 및 임시 안전조치 지시', '개선 완료 일정 확인', '조치 결과를 제보자에게 안내하고 포상 지급'];
+    const notes = [];
+    if (r.type === 'A' && !r.photoAfter.length) notes.push('개선 후 사진이 없어 조치 완료 확인이 필요합니다.');
+    if (r.detail.length < 20) notes.push('상세 내용이 짧아 포상 제외 기준(작성 미흡)에 해당할 수 있습니다.');
+    if (!r.benepia) notes.push('베네피아 ID가 없어 포인트 지급 전 확인이 필요합니다.');
+    const dup = withDup ? findDuplicate(r) : null;
+    if (dup) notes.push(`중복·유사 제보 의심: ${dup.id} (${fmtDate(dup.createdAt)})`);
+    const reward = dup && new Date(dup.createdAt) < new Date(r.createdAt) ? 'none' : r.type === 'A' ? 'improve' : 'general';
+    return { kinds: hits.map(h => h.key), level, actions, steps, reward, notes };
+  }
+
+  // ---------- 이메일 발송 (테스트: 메일 앱 열기 / 실제 버전: 서버에서 사진 포함 자동 발송) ----------
+  const MAIL_KEY = 'sg_mail_to', DEFAULT_MAIL = '1234@gmail.com';
+  const getMailTo = () => { try { return localStorage.getItem(MAIL_KEY) || DEFAULT_MAIL; } catch { return DEFAULT_MAIL; } };
+  function mailBody(r, a) {
+    return [
+      `[안전제보] ${r.id}`, '',
+      `접수일시: ${new Date(r.createdAt).toLocaleString('ko-KR')}`,
+      `제보 유형: ${r.type} ${TYPE[r.type]}`,
+      `성명: ${r.name}`, `소속 사업장: ${r.site}`, `휴대폰: ${r.phone}`, `베네피아 ID: ${r.benepia || '미입력'}`,
+      `처리 상태: ${STATUS[r.status]}`, `포상: ${rewardMap()[r.reward]}`, '',
+      '■ 상세 내용', r.detail, '',
+      `■ 자동 분석 (위험도 ${LEVEL[a.level]} / ${a.kinds.join(', ') || '분류 필요'})`,
+      ...a.actions.map(x => `- ${x}`),
+      ...(a.notes.length ? ['', '■ 확인 필요', ...a.notes.map(x => `- ${x}`)] : []),
+      ...(r.memo ? ['', '■ 관리자 메모', r.memo] : []), '',
+      `첨부 사진: 위험요인 ${r.photoBefore.length}장, 개선 후 ${r.photoAfter.length}장 (관리자 화면에서 확인)`,
+    ].join('\r\n');
+  }
+
   function openDetail(id) {
     const r = load().find(x => x.id === id); if (!r) return;
+    const a = analyze(r);
     dlg.innerHTML = `
       <div class="dlg-head"><h3>${esc(r.id)} <span class="pill t-${r.type}">${r.type} ${TYPE[r.type]}</span></h3><button class="x" data-act="close" aria-label="닫기">×</button></div>
       <div class="dlg-body">
@@ -665,10 +983,26 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
         <div class="detail-text">${esc(r.detail)}</div>
         ${photoBlock('위험요인 사진', r.photoBefore)}
         ${r.type === 'A' ? photoBlock('개선 후 조치 사진', r.photoAfter) : ''}
+        <div class="ai">
+          <div class="ai-head"><b>자동 분석</b><span class="opt">테스트 버전 · 키워드 규칙 기반</span></div>
+          <div class="ai-row"><span>위험 유형</span><b>${a.kinds.length ? a.kinds.map(esc).join(', ') : '분류 필요'}</b></div>
+          <div class="ai-row"><span>위험도</span><span class="pill lv-${a.level}">${LEVEL[a.level]}</span></div>
+          <p class="ph-title">권장 조치</p>
+          <ul class="bullets">${a.actions.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+          <p class="ph-title">처리 순서</p>
+          <ol class="bullets">${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+          <div class="ai-row" style="margin-top:12px"><span>추천 포상</span><b>${esc(rewardMap()[a.reward])}</b><button class="btn ghost sm" type="button" data-act="apply">적용</button></div>
+          ${a.notes.length ? `<ul class="ai-notes">${a.notes.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+        </div>
         <div class="manage">
           <div><label for="d-status">처리 상태</label><select id="d-status">${Object.entries(STATUS).map(([k, n]) => `<option value="${k}" ${r.status === k ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
-          <div><label for="d-reward">포상 등급</label><select id="d-reward">${Object.entries(REWARD).map(([k, n]) => `<option value="${k}" ${r.reward === k ? 'selected' : ''}>${n}</option>`).join('')}</select><p class="warn" id="bestWarn" hidden></p></div>
+          <div><label for="d-reward">포상 등급</label><select id="d-reward">${Object.entries(rewardMap()).map(([k, n]) => `<option value="${k}" ${r.reward === k ? 'selected' : ''}>${n}</option>`).join('')}</select><p class="warn" id="bestWarn" hidden></p></div>
           <div class="full"><label for="d-memo">관리자 메모</label><textarea id="d-memo" placeholder="검토 의견, 제외 사유 등">${esc(r.memo)}</textarea></div>
+        </div>
+        <div class="mail">
+          <label for="d-mail">이메일로 보내기</label>
+          <div class="mail-row"><input type="email" id="d-mail" value="${esc(getMailTo())}" autocomplete="email"><button class="btn" type="button" data-act="mail">보내기</button></div>
+          <p class="hint">테스트 버전이라 메일 앱이 열리고 사진은 첨부되지 않습니다. 실제 버전에서는 서버에서 사진까지 담아 바로 발송됩니다.</p>
         </div>
       </div>
       <div class="dlg-foot"><button class="btn danger" data-act="delete">삭제</button><div style="display:flex;gap:8px"><button class="btn ghost" data-act="close">닫기</button><button class="btn" data-act="save">저장</button></div></div>`;
@@ -692,6 +1026,24 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       if (img) { $('#lightbox img').src = img.src; $('#lightbox').showModal(); return; }
       const act = e.target.closest('[data-act]')?.dataset.act;
       if (act === 'close') dlg.close();
+      if (act === 'apply') {
+        rewardSel.value = a.reward; rewardSel.dispatchEvent(new Event('change'));
+        const memo = $('#d-memo', dlg);
+        if (!memo.value.trim()) memo.value = '권장 조치\n' + a.actions.map(x => `- ${x}`).join('\n');
+        toast('추천 포상과 권장 조치를 넣었습니다. 저장을 눌러야 반영됩니다.');
+      }
+      if (act === 'mail') {
+        if (!isAuthed()) { dlg.close(); return route(); } // 로그인한 관리자만 발송 가능
+        const to = $('#d-mail', dlg).value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) return toast('올바른 이메일 주소를 입력해 주세요.');
+        try { localStorage.setItem(MAIL_KEY, to); } catch {}
+        // 메일에는 저장 전이라도 화면에 입력된 상태·포상·메모를 담음
+        const cur = { ...r, status: $('#d-status', dlg).value, reward: rewardSel.value, memo: $('#d-memo', dlg).value };
+        const link = document.createElement('a');
+        link.href = `mailto:${to}?subject=${encodeURIComponent(`[안전제보] ${r.id} ${TYPE[r.type]} · ${r.site}`)}&body=${encodeURIComponent(mailBody(cur, a))}`;
+        link.click();
+        toast(`${to} 로 보낼 메일을 열었습니다.`);
+      }
       if (act === 'save') {
         const list = load(), x = list.find(y => y.id === r.id);
         x.status = $('#d-status', dlg).value; x.reward = rewardSel.value; x.memo = $('#d-memo', dlg).value;
@@ -712,7 +1064,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     const head = ['접수번호', '접수일시', '유형', '성명', '소속 사업장', '휴대폰', '베네피아 ID', '상세 내용', '사진 수', '상태', '포상', '메모'];
     const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const rows = list.map(r => [r.id, new Date(r.createdAt).toLocaleString('ko-KR'), TYPE[r.type], r.name, r.site, r.phone, r.benepia, r.detail,
-      r.photoBefore.length + r.photoAfter.length, STATUS[r.status], REWARD[r.reward], r.memo].map(cell).join(','));
+      r.photoBefore.length + r.photoAfter.length, STATUS[r.status], rewardMap()[r.reward], r.memo].map(cell).join(','));
     const blob = new Blob(['﻿' + [head.map(cell).join(','), ...rows].join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = `안전제보_${new Date().toISOString().slice(0, 10)}.csv`; a.click();
@@ -730,7 +1082,12 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
     save([...samples, ...load()]); renderAdmin(); toast('샘플 제보 3건을 추가했습니다.');
   });
 
-  route();
+  renderContent();
+  (async () => {
+    try { cache = (await idbGet(KEY)) || []; } catch {}
+    try { const saved = await idbGet(CFG_KEY); if (saved) { cfg = { ...DEFAULT_CONFIG, ...saved }; renderContent(); } } catch {}
+    route();
+  })();
 })();
 </script>
 </body>
