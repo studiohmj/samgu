@@ -121,8 +121,9 @@ textarea{min-height:160px;resize:vertical;line-height:1.6}
 .thumb{position:relative;width:84px;height:84px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
 .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:14px;line-height:1;cursor:pointer}
-.after-only{display:none}
-form.type-A .after-only{display:block}
+.after-only .b-note{display:none;font-size:13px;color:var(--muted);margin:0 0 8px}
+form.type-B .after-only .drop{opacity:.45;pointer-events:none}
+form.type-B .after-only .b-note{display:block}
 .reveal{animation:reveal .25s ease}
 @keyframes reveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 
@@ -272,7 +273,7 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
           <li>안전 전담 근로자(작업감시자 등)의 일상 점검·교육에 대한 제보</li>
           <li>삼구아이앤씨 및 직계약 수급업체 대상 외 제보</li>
           <li>제보 범위에서 벗어나거나, 상세 내용 작성이 미흡한 제보</li>
-          <li>중복·유사 제보 (가장 먼저 접수된 1건만 인정)</li>
+          <li>중복·유사 제보 (최상위 1건만 인정)</li>
         </ul>
       </div>
     </details>
@@ -358,7 +359,8 @@ dialog::backdrop{background:rgba(10,15,12,.55)}
       </div>
 
       <div class="field after-only reveal" data-field="after">
-        <div class="label">개선 후 조치 사진 <span class="opt">개선 제보 · 최대 3장</span></div>
+        <div class="label">개선 후 조치 사진 <span class="opt">A 개선 제보만 해당 · 최대 3장</span></div>
+        <p class="b-note">B 일반 제보는 개선 후 사진이 필요 없습니다.</p>
         <div class="drop" data-kind="after">
           <input type="file" accept="image/*" multiple aria-label="개선 후 사진 선택">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v13H3z"/><circle cx="12" cy="13" r="4"/></svg>
